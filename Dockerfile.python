@@ -1,0 +1,37 @@
+# FROM debian:bullseye AS base
+FROM python:3.9-slim AS base
+
+RUN set -ex;         \
+    apt-get update;  \
+    apt-get install -y libgdal28
+
+# The first stage will install build dependencies on top of the
+# runtime dependencies, and then compile
+
+FROM base AS builder
+
+RUN set -ex;                                                                      \
+    apt-get install -y g++ curl cmake libgdal-dev ;                                \
+    mkdir -p /usr/src;                                                            \
+    cd /usr/src;                                                                  \
+    curl -L https://github.com/sahrk/DGGRID/archive/refs/tags/v7.5.tar.gz | tar -zxf -;  \
+    cd DGGRID-7.5;                                                     \
+    mkdir build; \
+    cd build; \
+    cmake -D CMAKE_BUILD_TYPE=Release .. ; make; ls -ltr src/apps/dggrid; cp src/apps/dggrid/dggrid /usr/local/bin/dggrid
+
+
+# The second stage will already contain all dependencies, just copy
+# the compiled executables
+
+FROM base AS runtime
+
+COPY --from=builder /usr/local/bin/dggrid /usr/local/bin/dggrid
+RUN python3 -m pip install --upgrade pip && python3 -m pip install geopandas dggrid4py h3 rhealpixdggs fastapi uvicorn python-dotenv
+
+WORKDIR /webapi
+COPY ./webapi /webapi
+RUN mv /webapi/.env.example /webapi/.env
+
+CMD ["uvicorn", "main:create_app", "--host", "0.0.0.0", "--proxy-headers", "--port", "80"]
+
