@@ -31,7 +31,7 @@ onMounted(() => {
     "https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson";
 
   const demo_grid =
-    "https://dggrid-py-xj6vl2xpya-lz.a.run.app/api/grid_gen/ISEA7H/2";
+    "https://dggrid-py-bozea3cspa-ew.a.run.app/api/grid_gen/ISEA7H/2";
 
   fetch(demo_grid)
     .then((res) => res.json())

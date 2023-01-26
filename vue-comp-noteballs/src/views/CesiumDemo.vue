@@ -37,7 +37,7 @@ onMounted(async () => {
   // const resource = await Cesium.IonResource.fromAssetId(1450246);
   // const dataSource = await Cesium.GeoJsonDataSource.load(resource);
   const dataSource = await Cesium.GeoJsonDataSource.load(
-    "https://dggrid-py-xj6vl2xpya-lz.a.run.app/api/grid_gen/ISEA7H/2",
+    "https://dggrid-py-bozea3cspa-ew.a.run.app/api/grid_gen/ISEA7H/2",
     {
       stroke: Cesium.Color.AQUA,
       strokeWidth: 3,
