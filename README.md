@@ -8,7 +8,7 @@ This app is a demo project by Alexander Kmoch and the Landscape Geoinformatics L
 
 ## DGGS Background
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/TXdTlC9cKkk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![DGGS Teaser](yt_teaser.jpg)](https://www.youtube.com/watch?v=TXdTlC9cKkk)
 
 - https://www.youtube.com/playlist?list=PLnRNODhZNeWKKIc1Gb-VsPwQ2HD5okYoD
 
