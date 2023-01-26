@@ -8,6 +8,11 @@ This app is a demo project by Alexander Kmoch and the Landscape Geoinformatics L
 
 ## DGGS Background
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TXdTlC9cKkk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+- https://www.youtube.com/playlist?list=PLnRNODhZNeWKKIc1Gb-VsPwQ2HD5okYoD
+
+
 Alexander Kmoch, Ivan Vasilyev, Holger Virro & Evelyn Uuemaa (2022) Area and shape distortions in open-source discrete global grid systems, Big Earth Data, 6:3, 256-275, DOI: [10.1080/20964471.2022.2094926](https://doi.org/10.1080/20964471.2022.2094926)
 
 [Landscape Geoinformatics Lab](https://landscape-geoinformatics.ut.ee/), University of Tartu, Estonia
@@ -24,4 +29,11 @@ H3 Hexagonal Hierarchical Geospatial Indexing System, [H3 GitHub](https://github
 - https://github.com/nshen/vite-plugin-cesium
 - https://github.com/vasturiano/globe.gl
 - https://deck.gl
+
+## How to DGGS yourself
+
+- https://www.youtube.com/playlist?list=PLnRNODhZNeWJ8jeo_BAcqON0M9ntr8mMy
+- rHEALPix DGGS is avaialable as Python package
+- H3 is available virtually in all programming languages
+- DGGRID is a C++ application, Dockerfiles are available
 
