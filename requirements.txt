@@ -1,0 +1,7 @@
+geopandas
+h3
+rhealpixdggs
+fastapi
+uvicorn
+python-dotenv
+dggrid4py
