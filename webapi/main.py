@@ -7,6 +7,7 @@ import uvicorn as uvicorn
 from fastapi import FastAPI, Depends, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from typing import Union
 import model
@@ -55,6 +56,7 @@ router = APIRouter(prefix="/api")
 def create_app():
     # app = FastAPI()
     fast_app = FastAPI()
+    fast_app.mount("/", StaticFiles(directory="static",html = True), name="static")
     fast_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

@@ -1,0 +1,26 @@
+VERSION 0.6
+FROM node:lts-bullseye-slim
+WORKDIR /frontend
+
+deps:
+    COPY package.json package.json
+    RUN npm install
+    SAVE ARTIFACT package-lock.json AS LOCAL ./package-lock.json
+
+build:
+    FROM +deps
+    COPY src src
+    COPY public public
+    COPY index.html index.html
+    COPY vite.config.js vite.config.js
+    COPY .eslintrc.cjs .
+    COPY .prettierrc.json .
+    RUN npm run build
+    SAVE ARTIFACT dist /dist AS LOCAL dist
+
+docker:
+    FROM +deps
+    COPY +build/dist ./dist
+    EXPOSE 8080
+    ENTRYPOINT ["/frontend/node_modules/http-server/bin/http-server", "./dist"]
+    SAVE IMAGE dggs-frontend:latest
