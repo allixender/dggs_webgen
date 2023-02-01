@@ -20,7 +20,7 @@ docker:
     COPY webapi /webapi
     RUN mv /webapi/.env.example /webapi/.env
     ENTRYPOINT ["uvicorn", "main:create_app", "--host", "0.0.0.0", "--proxy-headers", "--port", "80"]
-    SAVE IMAGE dggrid-py:wed.01
+    SAVE IMAGE dggrid-py:ci
 
 
 
