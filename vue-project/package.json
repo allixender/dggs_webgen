@@ -1,0 +1,29 @@
+{
+  "name": "dggs-vue-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "css-build": "node-sass --omit-source-map-url sass/main.scss src/assets/main.css",
+    "css-watch": "npm run css-build -- --watch"
+  },
+  "dependencies": {
+    "axios": "^1.2.2",
+    "cesiumjs": "^1.10.0",
+    "pinia": "^2.0.26",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "bulma": "^0.9.4",
+    "eslint": "^8.33.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "node-sass": "^8.0.0",
+    "prettier": "^2.8.3",
+    "vite": "^3.2.4"
+  }
+}

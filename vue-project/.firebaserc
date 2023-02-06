@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "lgeoinfo"
+  },
+  "targets": {
+    "lgeoinfo": {
+      "hosting": {
+        "dggridder": [
+          "dggs-generator"
+        ]
+      }
+    }
+  }
+}

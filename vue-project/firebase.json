@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "dist",
+    "target": "dggridder",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
