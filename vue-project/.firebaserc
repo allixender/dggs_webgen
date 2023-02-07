@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "lgeoinfo"
+    "default": "glomodat"
   },
   "targets": {
-    "lgeoinfo": {
+    "glomodat": {
       "hosting": {
-        "dggridder": [
-          "dggs-generator"
+        "master": [
+          "dggs-info"
         ]
       }
     }

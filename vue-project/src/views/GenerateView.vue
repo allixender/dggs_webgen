@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1 class="title">A Discrete Global Grid System generator</h1>
+    <h1 class="title">Generate and download different Discrete Global Grid Systems</h1>
   </div>
 
   <div class="columns">
@@ -21,12 +21,6 @@
         </div>
       </div>
       <div class="field">
-        <div class="control">
-          <button id="stats_button" class="button is-link">Stats</button>
-
-        </div>
-      </div>
-      <div class="field">
         <label class="label">Select output format:</label>
         <div class="control select is-primary">
           <select v-model="sel_format">
@@ -37,17 +31,19 @@
       </div>
       <div class="field">
         <div class="control">
-          <button id="gridgen_button" class="button is-info">Generate Grid</button>
+          <button id="gridgen_button" class="button is-info" @click="getData">Generate Grid</button>
 
         </div>
       </div>
-      <div>dggs: {{ dggs_sel }} at resolution: 1
+      <div>dggs: {{ dggs_sel }} at resolution: {{ sel_resolution }}
         with format: {{ sel_format }}
+        <p v-if="loading">
+          Loading...
+        </p>
+        <p v-if="error">
+          {{ error_info }}
+        </p>
       </div>
-    </div>
-
-    <div class="column is-9 is-offset-3">
-      <p>lorem ipsum</p>
     </div>
   </div>
 
@@ -71,7 +67,7 @@ onMounted(() => {
   console.log(`the component is now mounted.`)
 })
 
-const outformat_default = ref({ formats: ["GPKG", "SHAPEZIP", "FLATGEOBUF", "GEOJSON", "KML"] });
+const outformat_default = ref({ formats: ["FLATGEOBUF", "GEOJSON", "KML"] });
 const sel_format = ref("GEOJSON");
 
 const dggs_types = ref({
@@ -96,13 +92,35 @@ const dggs_sel = ref("ISEA3H");
 const max_resolution = reactive(20);
 const sel_resolution = ref(1);
 
-// depending on dggs and later also visible area, allow range of resolutions
-// but for stats its fine
-const allowResolutionsForDggs = computed(() => {
-  // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] etc non right inclusive
-  const arr = [...Array(max_resolution).keys()];
-  return arr;
-})
+const loading = ref(false);
+const error = ref(null);
+const error_info = ref(null);
+
+const getData = () => {
+  error.value = false
+  loading.value = true;
+  const data_url = `https://dggrid-py-bozea3cspa-ew.a.run.app/api/grid_gen/${dggs_sel.value}/${sel_resolution.value}?format=${sel_format.value}`;
+
+  fetch(data_url)
+    .then(response => response.blob()).then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      // the filename you want
+      a.download = `${dggs_sel.value}.${sel_format.value}`;
+      document.body.appendChild(a);
+      a.click();
+      // a.remove();
+
+      loading.value = false;
+    }).catch((error_obj) => {
+      error.value = true;
+      console.log(error_obj);
+      error_info.value = 'Looks like there was a problem: \n' + error_obj;
+      loading.value = false;
+    });
+}
 
 </script>
 

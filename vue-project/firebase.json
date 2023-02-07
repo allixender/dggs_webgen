@@ -1,11 +1,18 @@
 {
   "hosting": {
     "public": "dist",
-    "target": "dggridder",
+    "target": "master",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "rewrites": [{
+      "source": "/api",
+      "run": {
+        "serviceId": "dggrid-py",
+        "region": "europe-west1"
+      }
+    }]
   }
 }

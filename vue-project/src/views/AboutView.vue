@@ -1,6 +1,10 @@
 <template>
 
   <div class="box">
+    <h1 class="title">About Discrete Global Grid Systems</h1>
+  </div>
+
+  <div class="box">
     <p> Alexander Kmoch, Ivan Vasilyev, Holger Virro &amp; Evelyn Uuemaa (2022) Area and shape distortions in
       open-source discrete global grid systems, Big Earth Data, 6:3, 256-275, <a target="_blank"
         href="https://doi.org/10.1080/20964471.2022.2094926">DOI: 10.1080/20964471.2022.2094926</a></p>
