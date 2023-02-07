@@ -3,16 +3,17 @@ VERSION 0.6
 FROM python:3.10-slim
 
 deps:
+    RUN apt-get update && apt-get install -y libgdal28 proj-bin	libproj19
     RUN pip install wheel
     COPY requirements.txt ./
     RUN pip wheel -r requirements.txt --wheel-dir=wheels
     SAVE ARTIFACT wheels /wheels
 
 docker:
-    RUN apt-get update && apt-get install -y libgdal28
+    RUN apt-get update && apt-get install -y libgdal28 proj-bin libproj19
     COPY github.com/allixender/DGGRID+build/dggrid /usr/local/bin/dggrid
     COPY github.com/allixender/dggrid4py+build/dggrid4py-0.2.6-py3-none-any.whl dggrid4py-0.2.6-py3-none-any.whl
-    COPY ./vue-comp-noteballs+build/dist /webapi/static
+    COPY ./vue-project+build/dist /webapi/static
     COPY +deps/wheels wheels
     COPY requirements.txt ./
     RUN pip install --no-index --find-links=wheels -r requirements.txt

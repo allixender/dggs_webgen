@@ -5,3 +5,7 @@ fastapi
 uvicorn
 python-dotenv
 dggrid4py
+numpy
+pandas
+shapely<2
+# pyproj==3
