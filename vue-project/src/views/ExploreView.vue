@@ -14,40 +14,22 @@
         </div>
       </div>
       <div class="field">
-        <label class="label">Enter DGGS resolution (~ 1-15):</label>
         <div class="control">
-          <input class="input is-primary" type="text" v-model="sel_resolution">
+          <button id="gridgen_button" class="button is-info" @click="loadNew">View Grid</button>
 
         </div>
       </div>
-      <div class="field">
-        <div class="control">
-          <button id="stats_button" class="button is-link">Stats</button>
-
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Select output format:</label>
-        <div class="control select is-primary">
-          <select v-model="sel_format">
-            <option v-for="f in outformat_default.formats" :key="f" :value="f">{{ f }}</option>
-          </select>
-
-        </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button id="gridgen_button" class="button is-info">Generate Grid</button>
-
-        </div>
-      </div>
-      <div>dggs: {{ dggs_sel }} at resolution: 1
-        with format: {{ sel_format }}
+      <div>dggs: {{ dggs_sel }} at 2 resolutions
+        <p v-if="view_info"> {{ view_info }}</p>
       </div>
     </div>
 
     <div class="column is-9 is-offset-3">
-      <p>lorem ipsum</p>
+      <div class="container">
+        <div class="deck-container">
+          <canvas id="deck"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -64,15 +46,14 @@
 <script setup>
 import Footer from '@/components/Footer.vue';
 import { ref, onMounted } from 'vue';
-import { reactive, computed } from 'vue'
+import { Deck, _GlobeView } from "@deck.gl/core";
+import { GeoJsonLayer } from "@deck.gl/layers";
 
-onMounted(() => {
-  // maybe initial ping to web service?
-  console.log(`the component is now mounted.`)
-})
+const loading = ref(false);
+const error = ref(null);
+const error_info = ref(null);
 
-const outformat_default = ref({ formats: ["GPKG", "SHAPEZIP", "FLATGEOBUF", "GEOJSON", "KML"] });
-const sel_format = ref("GEOJSON");
+const cesiumContainer = ref(null);
 
 const dggs_types = ref({
   types: ["ISEA3H",
@@ -91,18 +72,129 @@ const dggs_types = ref({
     "RHEALPIX"]
 });
 
+const demos = {
+  "FULLER3H": [4, 5],
+  "FULLER4D": [3, 4],
+  "FULLER4H": [3, 4],
+  "FULLER4T": [3, 4],
+  "FULLER7H": [2, 3],
+  "FULLER43H": [4, 5],
+  "H3": [1, 2],
+  "ISEA3H": [4, 5],
+  "ISEA4D": [3, 4],
+  "ISEA4T": [3, 4],
+  "ISEA7H": [2, 3],
+  "RHEALPIX": [2, 3],
+  "ISEA4H": [3, 4],
+  "ISEA43H": [4, 5]
+};
+
 const dggs_sel = ref("ISEA3H");
 
-const max_resolution = reactive(20);
-const sel_resolution = ref(1);
+const view_info = ref(null);
 
-// depending on dggs and later also visible area, allow range of resolutions
-// but for stats its fine
-const allowResolutionsForDggs = computed(() => {
-  // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] etc non right inclusive
-  const arr = [...Array(max_resolution).keys()];
-  return arr;
-})
+// onMounted(async () => {
+const loadNew = (async () => {
+  loading.value = true;
+
+  const sample = demos[dggs_sel.value];
+
+  const id1 = sample[0];
+  const id2 = sample[1];
+  view_info.value = `Resolutions ${sample[0]} ${sample[1]}`;
+
+  const INITIAL_VIEW_STATE = {
+    latitude: 51.47,
+    longitude: 0.45,
+    zoom: 1,
+    minZoom: 1,
+    maxZoom: 10,
+  };
+  const data_geo =
+    "https://storage.googleapis.com/geo-assets/dggs-dev/demo-grids/ne_110m_admin_0_countries.geojson";
+
+  const demo_grid =
+    `https://storage.googleapis.com/geo-assets/dggs-dev/demo-grids/${dggs_sel.value}_${id1}_global_split.geojson`;
+
+  const demo_grid1 =
+    `https://storage.googleapis.com/geo-assets/dggs-dev/demo-grids/${dggs_sel.value}_${id2}_global_split.geojson`;
+
+  const deckgl = new Deck({
+    id: "deck-container",
+    canvas: "deck",
+    views: new _GlobeView({
+      resolution: 10,
+    }),
+    initialViewState: INITIAL_VIEW_STATE,
+    controller: true,
+    layers: [
+      new GeoJsonLayer({
+        id: "natural_earth",
+        data: data_geo,
+        getFillColor: () => [100, 250, 150, 150],
+        stroked: true,
+        filled: true,
+        pickable: false,
+        getLineWidth: 0,
+        lineWidthScale: 0,
+        lineWidthMinPixels: 0,
+        getLineColor: [100, 250, 150, 150],
+      }),
+      new GeoJsonLayer({
+        id: "hexes",
+        data: demo_grid1,
+        getFillColor: [0, 0, 0],
+        stroked: true,
+        filled: false,
+        pickable: false,
+        getLineWidth: 5,
+        lineWidthScale: 20,
+        lineWidthMinPixels: 2,
+        getLineColor: [200, 200, 200],
+      }),
+      new GeoJsonLayer({
+        id: "hexes1",
+        data: demo_grid,
+        getFillColor: [0, 0, 0],
+        stroked: true,
+        filled: false,
+        pickable: false,
+        getLineWidth: 6,
+        lineWidthScale: 20,
+        lineWidthMinPixels: 3,
+        getLineColor: [100, 200, 300],
+      }),
+    ],
+    parameters: { cull: true },
+  });
+
+  loading.value = false;
+});
 
 </script>
 
+<style scoped>
+html,
+body,
+#cesiumContainer {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.deck-container {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  /* height: 100%; */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck {
+  height: 100%;
+}
+</style>

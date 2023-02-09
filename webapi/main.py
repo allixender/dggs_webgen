@@ -86,7 +86,7 @@ router = APIRouter(prefix="/api")
 def create_app():
     # app = FastAPI()
     fast_app = FastAPI()
-    fast_app.mount("/", StaticFiles(directory="static",html = True), name="static")
+    # fast_app.mount("/", StaticFiles(directory="static",html = True), name="static")
     fast_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
